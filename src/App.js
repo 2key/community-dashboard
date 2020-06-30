@@ -27,7 +27,6 @@ function App() {
   const monthArr = initMonth();
 
   const gettingData = useCallback(async () => {
-    // const web3 = new Web3('wss://ws.private.prod.k8s.2key.net')
     const web3 = new Web3(process.env.REACT_APP_WEB3_PROVIDER)
 
     const { number: latestBlock } = await web3.eth.getBlock('latest')
