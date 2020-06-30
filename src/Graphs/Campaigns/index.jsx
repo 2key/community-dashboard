@@ -2,6 +2,8 @@ import React from 'react';
 import { ResponsiveLine } from '@nivo/line';
 
 import renderCampaignData from './renderCampaignData';
+import PropTypes from "prop-types";
+import Users from "../Users";
 
 const Campaigns = ({ data }) => (
   <ResponsiveLine
@@ -9,6 +11,7 @@ const Campaigns = ({ data }) => (
     margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
     xScale={{ type: 'point' }}
     yScale={{ type: 'linear' }}
+    width={925}
     axisBottom={{
       orient: 'bottom',
       tickSize: 5,
@@ -37,21 +40,23 @@ const Campaigns = ({ data }) => (
     pointBorderColor={{ from: 'serieColor' }}
     pointLabel="y"
     pointLabelYOffset={-12}
+    animate={true}
     useMesh={true}
+    motionStiffness={135}
     // enableArea={true}
     legends={[
       {
-        anchor: 'bottom-right',
-        direction: 'column',
+        anchor: 'top-left',
+        direction: 'row',
         justify: false,
-        translateX: 100,
-        translateY: 0,
-        itemsSpacing: 0,
+        translateX: -37,
+        translateY: -40,
+        itemsSpacing: 15,
         itemDirection: 'left-to-right',
-        itemWidth: 80,
+        itemWidth: 130,
         itemHeight: 20,
         itemOpacity: 0.75,
-        symbolSize: 12,
+        symbolSize: 13,
         symbolShape: 'circle',
         symbolBorderColor: 'rgba(0, 0, 0, .5)',
         effects: [
@@ -68,5 +73,9 @@ const Campaigns = ({ data }) => (
     ]}
   />
 )
+
+Users.propTypes = {
+  data: PropTypes.array.isRequired,
+}
 
 export default Campaigns;

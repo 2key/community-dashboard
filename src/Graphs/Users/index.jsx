@@ -1,12 +1,15 @@
 import React from 'react';
 import { ResponsiveLine } from '@nivo/line';
 
-const UniqUsers = ({ data, isVisitors }) => (
+import PropTypes from 'prop-types';
+
+const Users = ({ data, isVisitors = false }) => (
   <ResponsiveLine
     data={[{id: 'Uniq users', data }]}
     margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
     xScale={{ type: 'point' }}
     yScale={{ type: 'linear' }}
+    width={925}
     axisBottom={{
       orient: 'bottom',
       tickSize: 5,
@@ -39,17 +42,17 @@ const UniqUsers = ({ data, isVisitors }) => (
     enableArea={true}
     legends={[
       {
-        anchor: 'bottom-right',
-        direction: 'column',
+        anchor: 'top-left',
+        direction: 'row',
         justify: false,
-        translateX: 100,
-        translateY: 0,
-        itemsSpacing: 0,
+        translateX: -37,
+        translateY: -40,
+        itemsSpacing: 15,
         itemDirection: 'left-to-right',
-        itemWidth: 80,
+        itemWidth: 130,
         itemHeight: 20,
         itemOpacity: 0.75,
-        symbolSize: 12,
+        symbolSize: 13,
         symbolShape: 'circle',
         symbolBorderColor: 'rgba(0, 0, 0, .5)',
         effects: [
@@ -67,4 +70,9 @@ const UniqUsers = ({ data, isVisitors }) => (
   />
 )
 
-export default UniqUsers;
+Users.propTypes = {
+  data: PropTypes.array.isRequired,
+  isVisitors: PropTypes.bool,
+}
+
+export default Users;

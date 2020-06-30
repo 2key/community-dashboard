@@ -1,9 +1,7 @@
 import axios from 'axios';
 
-const apiKey = 'GMUZIIH5AJYQDVIZJTH5M96I9IFKCJUTTP';
-
 const getBlockByTimestamp = timestamp => {
-    const url = `https://api.etherscan.io/api?module=block&action=getblocknobytime&timestamp=${timestamp}&closest=before&apikey=${apiKey}`;
+    const url = `https://api.etherscan.io/api?module=block&action=getblocknobytime&timestamp=${timestamp}&closest=before&apikey=${process.env.REACT_APP_ETHERSCAN_API_KEY}`;
 
     return axios.get(url)
         .then(({ data }) => data.result)
@@ -39,7 +37,7 @@ export const getCampaignsPerMonth = arr => Promise.all(arr.map(blockNumber => ge
 
 const getUniqUsersCounter = blockNumber => {
   const GET_UNIQ_USERS_QUERY = `{
-    metas(block: { number: ${+blockNumber} }) {
+    metas(block: { number: ${blockNumber} }) {
       _visitCounter
       _plasmaToHandleCounter
     }

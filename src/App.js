@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
+import Web3 from 'web3'
 
 import Campaigns from './Graphs/Campaigns';
-import UniqUsers from './Graphs/UniqUsers';
-import { initMonth, getMonth } from './utils';
+import Users from './Graphs/Users';
+import { initMonth, getMonth, getBlocksNumberPlasma } from './utils';
 import {
   getBlocksByTimestamp,
   getCampaignsPerMonth,
@@ -26,8 +27,15 @@ function App() {
   const monthArr = initMonth();
 
   const gettingData = useCallback(async () => {
+    // const web3 = new Web3('wss://ws.private.prod.k8s.2key.net')
+    const web3 = new Web3(process.env.REACT_APP_WEB3_PROVIDER)
+
+    const { number: latestBlock } = await web3.eth.getBlock('latest')
+    const plasmaBlockNumbers = getBlocksNumberPlasma(monthArr, (latestBlock - 10))
+
     const blockNumbers = await getBlocksByTimestamp(monthArr);
-    const uniqUsers = await getUniqUsersPerMonth(blockNumbers);
+
+    const uniqUsers = await getUniqUsersPerMonth(plasmaBlockNumbers);
 
     const convertedUniqUsersData = uniqUsers.reverse().reduce(
       (acc, item, index) => {
@@ -124,7 +132,7 @@ function App() {
         <div className="container grey">
           <h2>Unique visitors</h2>
           <div className="graph">
-            {isUniqUsersLoaded && <UniqUsers data={uniqVisitors} isVisitors />}
+            {isUniqUsersLoaded && <Users data={uniqVisitors} isVisitors />}
           </div>
         </div>
         <div className="container">
@@ -136,7 +144,7 @@ function App() {
         <div className="container grey">
           <h2>Register users</h2>
           <div className="graph">
-            {isRegisterUsersLoaded && <UniqUsers data={registerUsers} />}
+            {isRegisterUsersLoaded && <Users data={registerUsers} />}
           </div>
         </div>
       </div>

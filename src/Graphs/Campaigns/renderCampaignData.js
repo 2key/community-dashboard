@@ -10,7 +10,7 @@ export default ({ token, cpc, donation }) => ([
     data: cpc
   },
   {
-    id: 'Donation',
+    id: 'Donation and Zoom',
     color: 'hsl(117, 70%, 50%)',
     data: donation
   }
