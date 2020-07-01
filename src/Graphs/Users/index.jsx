@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 const Users = ({ data, isVisitors = false }) => (
   <ResponsiveLine
-    data={[{id: isVisitors ? 'Unique visitors' : 'Register users', data }]}
+    data={[{id: isVisitors ? 'Unique Visitors' : 'Registered users', data }]}
     margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
     xScale={{ type: 'point' }}
     yScale={{ type: 'linear' }}

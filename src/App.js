@@ -129,19 +129,19 @@ function App() {
       </header>
       <div className="main">
         <div className="container grey">
-          <h2>Unique visitors</h2>
+          <h2>Unique visitors in 2key campaigns</h2>
           <div className="graph">
             {isUniqUsersLoaded && <Users data={uniqVisitors} isVisitors />}
           </div>
         </div>
         <div className="container">
-          <h2>Number of campaigns</h2>
+          <h2>Number of Created Campaigns</h2>
           <div className="graph">
             {isCampaignLoaded && <Campaigns data={campaignsData} />}
           </div>
         </div>
         <div className="container grey">
-          <h2>Register users</h2>
+          <h2>Registered users</h2>
           <div className="graph">
             {isRegisterUsersLoaded && <Users data={registerUsers} />}
           </div>
