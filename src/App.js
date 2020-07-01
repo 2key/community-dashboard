@@ -124,7 +124,7 @@ function App() {
       <header>
         <img src={TwoKeyLogo} alt="2key logo"/>
         <span className="header-metrics">
-          Community dashboard
+          Community Dashboard
         </span>
       </header>
       <div className="main">
