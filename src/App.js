@@ -27,7 +27,6 @@ function App() {
   const monthArr = initMonth();
 
   const gettingData = useCallback(async () => {
-    // const web3 = new Web3('wss://ws.private.prod.k8s.2key.net')
     const web3 = new Web3(process.env.REACT_APP_WEB3_PROVIDER)
 
     const { number: latestBlock } = await web3.eth.getBlock('latest')
@@ -43,7 +42,7 @@ function App() {
           _plasmaToHandleCounter: registerUsers,
           _visitCounter: uniqueVisitors,
         } = item;
-        const month = getMonth(monthArr, index);
+        const month = getMonth(monthArr, 4 - index);
 
         return {
           uniqueVisitors: [
@@ -75,7 +74,7 @@ function App() {
         _donationCampaignCreatedCounter: donation
       } = data;
 
-      const month = getMonth(monthArr, index);
+      const month = getMonth(monthArr, 4 - index);
 
       return {
         token: [

@@ -15,7 +15,7 @@ export const initMonth = () => {
   return dateArrPerMonths;
 }
 
-export const getMonth = (monthArr, index) => moment(+`${monthArr.reverse()[index]}000`).format('MMMM');
+export const getMonth = (monthArr, index) => moment(+`${monthArr[index]}000`).format('MMMM');
 
 export const getBlocksNumberPlasma = (monthArr, latestBlock) => monthArr.reduce((acc, item) => {
   const diffPerMonth = (+monthArr[0]) - (+item);
