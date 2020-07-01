@@ -42,7 +42,7 @@ function App() {
           _plasmaToHandleCounter: registerUsers,
           _visitCounter: uniqueVisitors,
         } = item;
-        const month = getMonth(monthArr, index);
+        const month = getMonth(monthArr, 4 - index);
 
         return {
           uniqueVisitors: [
@@ -74,7 +74,7 @@ function App() {
         _donationCampaignCreatedCounter: donation
       } = data;
 
-      const month = getMonth(monthArr, index);
+      const month = getMonth(monthArr, 4 - index);
 
       return {
         token: [
@@ -124,7 +124,7 @@ function App() {
       <header>
         <img src={TwoKeyLogo} alt="2key logo"/>
         <span className="header-metrics">
-          Metrics
+          Community dashboard
         </span>
       </header>
       <div className="main">
