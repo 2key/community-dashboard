@@ -30,7 +30,7 @@ function App() {
     const web3 = new Web3(process.env.REACT_APP_WEB3_PROVIDER)
 
     const { number: latestBlock } = await web3.eth.getBlock('latest')
-    const plasmaBlockNumbers = getBlocksNumberPlasma(monthArr, (latestBlock - 10))
+    const plasmaBlockNumbers = getBlocksNumberPlasma(monthArr, (latestBlock - 60))
 
     const blockNumbers = await getBlocksByTimestamp(monthArr);
 

@@ -2,7 +2,7 @@ import moment from "moment";
 
 export const initMonth = () => {
   let i = 1;
-  const date = Date.now();
+  const date = Date.now() - 60;
   const dateArrPerMonths = [`${date}`.slice(0, 10)];
 
   while (i < 5) {
