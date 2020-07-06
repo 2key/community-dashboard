@@ -69,3 +69,26 @@ header>img {
   border-radius: 7px;
   font-family: Roboto;
 }
+
+.spinner {
+  position: absolute;
+  top: 180px;
+  left: 395px;
+}
+
+.error-message {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.error-text {
+  font-family: Roboto;
+  display: flex;
+  width: auto;
+  color: #434343;
+  font-weight: 500;
+  font-size: 21px;
+}

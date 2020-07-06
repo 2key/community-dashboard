@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { ResponsiveLine } from '@nivo/line';
 
 import PropTypes from 'prop-types';
+import ErrorMessage from "../../ErrorMessage";
 
 const Users = ({ data, isVisitors = false }) => (
-  <ResponsiveLine
+  <Fragment>
+  {data.length ?
+      <ResponsiveLine
     data={[{id: isVisitors ? 'Unique Visitors' : 'Registered users', data }]}
     margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
     xScale={{ type: 'point' }}
@@ -67,7 +70,9 @@ const Users = ({ data, isVisitors = false }) => (
 
       }
     ]}
-  />
+  />:
+  <ErrorMessage />}
+  </Fragment>
 )
 
 Users.propTypes = {
