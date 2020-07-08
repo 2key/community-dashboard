@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import Web3 from 'web3'
 
+import Loader from './Loader';
 import Campaigns from './Graphs/Campaigns';
 import Users from './Graphs/Users';
 import { initMonth, getMonth, getBlocksNumberPlasma } from './utils';
@@ -34,75 +35,91 @@ function App() {
 
     const blockNumbers = await getBlocksByTimestamp(monthArr);
 
-    const uniqUsers = await getUniqUsersPerMonth(plasmaBlockNumbers);
+    const uniqUsers = await getUniqUsersPerMonth(plasmaBlockNumbers)
+      .catch(err => {
+        console.warn(err);
+        setIsRegisterUsersLoaded(true);
+        setIsUniqUsersLoaded(true);
+        return [];
+      });
 
-    const convertedUniqUsersData = uniqUsers.reverse().reduce(
-      (acc, item, index) => {
+    if(!uniqUsers.length) {
+      const convertedUniqUsersData = uniqUsers.reverse().reduce(
+        (acc, item, index) => {
+          const {
+            _plasmaToHandleCounter: registerUsers,
+            _visitCounter: uniqueVisitors,
+          } = item;
+          const month = getMonth(monthArr, 4 - index);
+
+          return {
+            uniqueVisitors: [
+              ...acc.uniqueVisitors,
+              {
+                y: uniqueVisitors,
+                x: month,
+              }
+            ],
+            registerUsers: [
+              ...acc.registerUsers,
+              {
+                y: registerUsers,
+                x: month,
+              }
+            ]
+          }
+        }, { uniqueVisitors: [], registerUsers: [] })
+
+      setUniqVisitors(convertedUniqUsersData.uniqueVisitors);
+      setRegisterUsers(convertedUniqUsersData.registerUsers);
+    }
+
+    const campaignData = await getCampaignsPerMonth(blockNumbers)
+      .catch(err => {
+        console.warn(err);
+
+        setIsCampaignLoaded(true);
+        return [];
+      });
+
+    if(campaignData.length) {
+      const convertedCampaignData = campaignData.reverse().reduce((acc, data, index) => {
         const {
-          _plasmaToHandleCounter: registerUsers,
-          _visitCounter: uniqueVisitors,
-        } = item;
+          _acquisitionCampaignCreatedCounter: token,
+          _cpcCampaignCreatedCounter: cpc,
+          _donationCampaignCreatedCounter: donation
+        } = data;
+
         const month = getMonth(monthArr, 4 - index);
 
         return {
-          uniqueVisitors: [
-            ...acc.uniqueVisitors,
+          token: [
+            ...acc.token,
             {
-              y: uniqueVisitors,
+              y: token,
               x: month,
             }
           ],
-          registerUsers: [
-            ...acc.registerUsers,
+          cpc: [
+            ...acc.cpc,
             {
-              y: registerUsers,
+              y: cpc,
+              x: month,
+            }
+          ],
+          donation:[
+            ...acc.donation,
+            {
+              y: donation,
               x: month,
             }
           ]
-        }
-      }, { uniqueVisitors: [], registerUsers: [] })
+        };
+      }, { token:[], cpc: [], donation: [] })
 
-    setUniqVisitors(convertedUniqUsersData.uniqueVisitors);
-    setRegisterUsers(convertedUniqUsersData.registerUsers);
-
-    const campaignData = await getCampaignsPerMonth(blockNumbers);
-
-    const convertedCampaignData = campaignData.reverse().reduce((acc, data, index) => {
-      const {
-        _acquisitionCampaignCreatedCounter: token,
-        _cpcCampaignCreatedCounter: cpc,
-        _donationCampaignCreatedCounter: donation
-      } = data;
-
-      const month = getMonth(monthArr, 4 - index);
-
-      return {
-        token: [
-          ...acc.token,
-          {
-            y: token,
-            x: month,
-          }
-        ],
-        cpc: [
-          ...acc.cpc,
-          {
-            y: cpc,
-            x: month,
-          }
-        ],
-        donation:[
-          ...acc.donation,
-          {
-            y: donation,
-            x: month,
-          }
-        ]
-      };
-    }, { token:[], cpc: [], donation: [] })
-
-    setCampaignsData(convertedCampaignData);
-    setIsCampaignLoaded(true);
+      setCampaignsData(convertedCampaignData);
+      setIsCampaignLoaded(true);
+    }
   }, [monthArr])
 
   useEffect(() => {
@@ -131,19 +148,28 @@ function App() {
         <div className="container grey">
           <h2>Unique visitors in 2key campaigns</h2>
           <div className="graph">
-            {isUniqUsersLoaded && <Users data={uniqVisitors} isVisitors />}
+            {isUniqUsersLoaded
+              ? <Users data={uniqVisitors} isVisitors />
+              : <Loader />
+            }
           </div>
         </div>
         <div className="container">
           <h2>Number of Created Campaigns</h2>
           <div className="graph">
-            {isCampaignLoaded && <Campaigns data={campaignsData} />}
+            {isCampaignLoaded
+              ? <Campaigns data={campaignsData} />
+              : <Loader />
+            }
           </div>
         </div>
         <div className="container grey">
           <h2>Registered users</h2>
           <div className="graph">
-            {isRegisterUsersLoaded && <Users data={registerUsers} />}
+            {isRegisterUsersLoaded
+              ? <Users data={registerUsers} />
+              : <Loader />
+            }
           </div>
         </div>
       </div>
