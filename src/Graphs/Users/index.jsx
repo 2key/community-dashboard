@@ -76,7 +76,7 @@ const Users = ({ data, isVisitors = false }) => (
 )
 
 Users.propTypes = {
-  data: PropTypes.array,
+  data: PropTypes.array.isRequired,
   isVisitors: PropTypes.bool,
 }
 
