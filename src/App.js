@@ -43,7 +43,7 @@ function App() {
         return [];
       });
 
-    if(!uniqUsers.length) {
+    if(uniqUsers.length) {
       const convertedUniqUsersData = uniqUsers.reverse().reduce(
         (acc, item, index) => {
           const {

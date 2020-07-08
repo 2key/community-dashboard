@@ -3,7 +3,6 @@ import { ResponsiveLine } from '@nivo/line';
 
 import renderCampaignData from './renderCampaignData';
 import PropTypes from "prop-types";
-import Users from "../Users";
 import ErrorMessage from "../../ErrorMessage";
 
 const Campaigns = ({ data }) => (
@@ -79,7 +78,7 @@ const Campaigns = ({ data }) => (
   </Fragment>
 )
 
-Users.propTypes = {
+Campaigns.propTypes = {
   data: PropTypes.object.isRequired,
 }
 
