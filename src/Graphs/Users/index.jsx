@@ -25,7 +25,7 @@ const Users = ({ data, isVisitors = false }) => (
         axisLeft={{
           orient: 'left',
           tickSize: 5,
-          tickPadding: 5,
+          tickPadding: -5,
           tickRotation: 0,
           legend: isVisitors ? 'Number of visitors' : 'Number of users',
           legendOffset: -50,

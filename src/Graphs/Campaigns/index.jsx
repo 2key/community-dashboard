@@ -45,7 +45,6 @@ const Campaigns = ({ data }) => (
         animate={true}
         useMesh={true}
         motionStiffness={135}
-        // enableArea={true}
         legends={[
           {
             anchor: 'top-left',
