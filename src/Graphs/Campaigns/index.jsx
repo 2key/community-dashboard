@@ -14,24 +14,6 @@ const Campaigns = ({ data }) => (
         xScale={{ type: 'point' }}
         yScale={{ type: 'linear' }}
         width={925}
-        axisBottom={{
-          orient: 'bottom',
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legend: 'Months 2020',
-          legendOffset: 36,
-          legendPosition: 'middle'
-        }}
-        axisLeft={{
-          orient: 'left',
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legend: 'Number of campaigns',
-          legendOffset: -50,
-          legendPosition: 'middle'
-        }}
         curve="catmullRom"
         colors={{ scheme: 'category10' }}
         pointSize={7}
@@ -45,7 +27,6 @@ const Campaigns = ({ data }) => (
         animate={true}
         useMesh={true}
         motionStiffness={135}
-        // enableArea={true}
         legends={[
           {
             anchor: 'top-left',

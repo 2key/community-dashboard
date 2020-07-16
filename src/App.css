@@ -71,9 +71,11 @@ header>img {
 }
 
 .spinner {
-  position: absolute;
-  top: 180px;
-  left: 395px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .error-message {
@@ -91,4 +93,21 @@ header>img {
   color: #434343;
   font-weight: 500;
   font-size: 21px;
+}
+
+@media (max-width: 768px) {
+  .graph {
+    width: 95%;
+    margin: 0;
+    padding: 0 0 0 5%;
+    border-radius: 0;
+  }
+
+  .graph > div > div {
+    overflow-x: scroll;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
 }

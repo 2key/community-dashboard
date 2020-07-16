@@ -13,24 +13,6 @@ const Users = ({ data, isVisitors = false }) => (
         xScale={{ type: 'point' }}
         yScale={{ type: 'linear' }}
         width={925}
-        axisBottom={{
-          orient: 'bottom',
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legend: 'Months 2020',
-          legendOffset: 36,
-          legendPosition: 'middle'
-        }}
-        axisLeft={{
-          orient: 'left',
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legend: isVisitors ? 'Number of visitors' : 'Number of users',
-          legendOffset: -50,
-          legendPosition: 'middle'
-        }}
         curve="monotoneX"
         colors={{ scheme: 'dark2' }}
         pointSize={7}
