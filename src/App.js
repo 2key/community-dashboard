@@ -25,6 +25,8 @@ function App() {
   const [registerUsers, setRegisterUsers] = useState([]);
   const [isRegisterUsersLoaded, setIsRegisterUsersLoaded] = useState(false);
 
+  const [windowWidth, setWindowWidth] = useState(375);
+
   const monthArr = initMonth();
 
   const gettingData = useCallback(async () => {
@@ -122,8 +124,30 @@ function App() {
     }
   }, [monthArr])
 
+  const getWindowWidth = useCallback(
+    () => {
+      setWindowWidth(window.innerWidth);
+    }, [setWindowWidth])
+
+  const calcGraphWidth = useCallback(
+    () => {
+      if (windowWidth <= 768) {
+        return windowWidth + 50
+      }
+
+      return 900
+    }, [windowWidth]
+  )
+
   useEffect(() => {
     gettingData();
+    getWindowWidth()
+
+    window.addEventListener('resize', getWindowWidth);
+
+    return () => () => {
+      window.removeEventListener('resize', getWindowWidth);
+    }
   }, [])
 
   useEffect(() => {
@@ -149,7 +173,12 @@ function App() {
           <h2>Unique visitors in 2key campaigns</h2>
           <div className="graph">
             {isUniqUsersLoaded
-              ? <Users data={uniqVisitors} isVisitors />
+              ? (
+                <Users
+                  data={uniqVisitors}
+                  isVisitors
+                  graphWidth={calcGraphWidth()}/>
+                  )
               : <Loader />
             }
           </div>
@@ -158,7 +187,7 @@ function App() {
           <h2>Number of Created Campaigns</h2>
           <div className="graph">
             {isCampaignLoaded
-              ? <Campaigns data={campaignsData} />
+              ? <Campaigns data={campaignsData} graphWidth={calcGraphWidth()} />
               : <Loader />
             }
           </div>
@@ -167,7 +196,7 @@ function App() {
           <h2>Registered users</h2>
           <div className="graph">
             {isRegisterUsersLoaded
-              ? <Users data={registerUsers} />
+              ? <Users data={registerUsers} graphWidth={calcGraphWidth()} />
               : <Loader />
             }
           </div>
