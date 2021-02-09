@@ -17,15 +17,13 @@ const getCampaignsCounter = blockNumber => {
     const GET_CAMPAIGNS_QUERY = `{
           metas(block: { number: ${+blockNumber} }) {
             id
-            _donationCampaignCreatedCounter
-            _acquisitionCampaignCreatedCounter
-            _cpcCampaignCreatedCounter
+            _n_campaigns
           }
         }
     `;
 
     return axios({
-        url: 'https://api.thegraph.com/subgraphs/name/2key/prod',
+        url: 'https://prod.api.graph.plasma.2key.net/subgraphs/name/plasma',
         method: 'post',
         data: {
             query: GET_CAMPAIGNS_QUERY,

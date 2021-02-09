@@ -76,7 +76,7 @@ function App() {
       setRegisterUsers(convertedUniqUsersData.registerUsers);
     }
 
-    const campaignData = await getCampaignsPerMonth(blockNumbers)
+    const campaignData = await getCampaignsPerMonth(plasmaBlockNumbers)
       .catch(err => {
         console.warn(err);
 
@@ -88,7 +88,7 @@ function App() {
       const convertedCampaignData = campaignData.reverse().reduce((acc, data, index) => {
         const {
           _acquisitionCampaignCreatedCounter: token,
-          _cpcCampaignCreatedCounter: cpc,
+          _n_campaigns: cpc,
           _donationCampaignCreatedCounter: donation
         } = data;
 
