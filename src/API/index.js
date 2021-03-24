@@ -1,55 +1,52 @@
 import axios from 'axios';
 
-const getBlockByTimestamp = timestamp => {
-    const url = `https://api.etherscan.io/api?module=block&action=getblocknobytime&timestamp=${timestamp}&closest=before&apikey=${process.env.REACT_APP_ETHERSCAN_API_KEY}`;
-
-    return axios.get(url)
-        .then(({ data }) => data.result)
-}
-
-export const getBlocksByTimestamp = arr => {
-    const promises = arr.map(timestamp => getBlockByTimestamp(timestamp))
-
-    return Promise.all(promises);
-}
-
 const getCampaignsCounter = blockNumber => {
     const GET_CAMPAIGNS_QUERY = `{
           metas(block: { number: ${+blockNumber} }) {
             id
             _n_campaigns
+            _visitCounter
+            _plasmaToHandleCounter
           }
         }
     `;
 
     return axios({
-        url: 'https://prod.api.graph.plasma.2key.net/subgraphs/name/plasma',
+        url: 'https://api.2key.network/subgraphs/name/plasma',
         method: 'post',
         data: {
             query: GET_CAMPAIGNS_QUERY,
         }
-    }).then(({ data: { data: { metas } } }) => metas[0])
-}
+    }).then((res) => {
+
+        const { data: { data: { metas } } } = res;
+        return metas[0];
+    })
+};
 
 export const getCampaignsPerMonth = arr => Promise.all(arr.map(blockNumber => getCampaignsCounter(blockNumber)));
 
-const getUniqUsersCounter = blockNumber => {
-  const GET_UNIQ_USERS_QUERY = `{
-    metas(block: { number: ${blockNumber} }) {
-      _visitCounter
-      _plasmaToHandleCounter
+export const getLatestSyncedBlock = () => {
+    const GET_LATEST_BLOCKS_QUERY = `{
+indexingStatuses{
+    chains{
+      latestBlock{
+        number
+      }
     }
-  }`
+  }
+}`;
 
-  return axios({
-    url: 'https://prod.api.graph.plasma.2key.net/subgraphs/name/plasma',
-    method: 'post',
-    data: {
-      query: GET_UNIQ_USERS_QUERY,
-    }
-  })
-  .then(({ data: { data: { metas } } }) => metas[0])
-}
+    return axios({
+        url: 'https://api.2key.network/subgraphs/plasma',
+        method: 'post',
+        data: {
+            query: GET_LATEST_BLOCKS_QUERY,
+        }
+    })
+        .then((res) => {
+            return parseInt(res.data.data.indexingStatuses[0].chains[0].latestBlock.number, 10) - 80;
+        })
+};
 
-export const getUniqUsersPerMonth = monthArr =>
-  Promise.all(monthArr.map(blockNumber => getUniqUsersCounter(blockNumber)));
+

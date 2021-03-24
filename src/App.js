@@ -6,9 +6,8 @@ import Campaigns from './Graphs/Campaigns';
 import Users from './Graphs/Users';
 import { initMonth, getMonth, getBlocksNumberPlasma } from './utils';
 import {
-  getBlocksByTimestamp,
   getCampaignsPerMonth,
-  getUniqUsersPerMonth,
+  getLatestSyncedBlock
 } from './API'
 import TwoKeyLogo from '../src/img/logo.svg';
 
@@ -30,51 +29,10 @@ function App() {
   const monthArr = initMonth();
 
   const gettingData = useCallback(async () => {
-    const web3 = new Web3(process.env.REACT_APP_WEB3_PROVIDER)
 
-    const { number: latestBlock } = await web3.eth.getBlock('latest')
-    const plasmaBlockNumbers = getBlocksNumberPlasma(monthArr, (latestBlock - 60))
+    const latestIndexedBlock = await getLatestSyncedBlock();
 
-    const blockNumbers = await getBlocksByTimestamp(monthArr);
-
-    const uniqUsers = await getUniqUsersPerMonth(plasmaBlockNumbers)
-      .catch(err => {
-        console.warn(err);
-        setIsRegisterUsersLoaded(true);
-        setIsUniqUsersLoaded(true);
-        return [];
-      });
-
-    if(uniqUsers.length) {
-      const convertedUniqUsersData = uniqUsers.reverse().reduce(
-        (acc, item, index) => {
-          const {
-            _plasmaToHandleCounter: registerUsers,
-            _visitCounter: uniqueVisitors,
-          } = item;
-          const month = getMonth(monthArr, 4 - index);
-
-          return {
-            uniqueVisitors: [
-              ...acc.uniqueVisitors,
-              {
-                y: uniqueVisitors,
-                x: month,
-              }
-            ],
-            registerUsers: [
-              ...acc.registerUsers,
-              {
-                y: registerUsers,
-                x: month,
-              }
-            ]
-          }
-        }, { uniqueVisitors: [], registerUsers: [] })
-
-      setUniqVisitors(convertedUniqUsersData.uniqueVisitors);
-      setRegisterUsers(convertedUniqUsersData.registerUsers);
-    }
+    const plasmaBlockNumbers = getBlocksNumberPlasma(monthArr, (latestIndexedBlock - 60));
 
     const campaignData = await getCampaignsPerMonth(plasmaBlockNumbers)
       .catch(err => {
@@ -89,10 +47,14 @@ function App() {
         const {
           _acquisitionCampaignCreatedCounter: token,
           _n_campaigns: cpc,
+          _plasmaToHandleCounter: registerUsers,
+          _visitCounter: uniqueVisitors,
           _donationCampaignCreatedCounter: donation
+
         } = data;
 
         const month = getMonth(monthArr, 4 - index);
+
 
         return {
           token: [
@@ -115,19 +77,35 @@ function App() {
               y: donation,
               x: month,
             }
+          ],
+          uniqueVisitors: [
+            ...acc.uniqueVisitors,
+            {
+              y: uniqueVisitors,
+              x: month,
+            }
+          ],
+          registerUsers: [
+            ...acc.registerUsers,
+            {
+              y: registerUsers,
+              x: month,
+            }
           ]
         };
-      }, { token:[], cpc: [], donation: [] })
+      }, { token:[], cpc: [], donation: [], uniqueVisitors: [], registerUsers: [] })
 
+      setUniqVisitors(convertedCampaignData.uniqueVisitors);
+      setRegisterUsers(convertedCampaignData.registerUsers);
       setCampaignsData(convertedCampaignData);
       setIsCampaignLoaded(true);
     }
-  }, [monthArr])
+  }, [monthArr]);
 
   const getWindowWidth = useCallback(
     () => {
       setWindowWidth(window.innerWidth);
-    }, [setWindowWidth])
+    }, [setWindowWidth]);
 
   const calcGraphWidth = useCallback(
     () => {
@@ -137,18 +115,18 @@ function App() {
 
       return 900
     }, [windowWidth]
-  )
+  );
 
   useEffect(() => {
     gettingData();
-    getWindowWidth()
+    getWindowWidth();
 
     window.addEventListener('resize', getWindowWidth);
 
     return () => () => {
       window.removeEventListener('resize', getWindowWidth);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     if(isDidMount.current) {

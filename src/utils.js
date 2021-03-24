@@ -7,13 +7,13 @@ export const initMonth = () => {
 
   while (i < 5) {
     const substractMonth = moment(date).subtract(i, 'months');
-    const formattedTimestamp = `${Date.parse(substractMonth)}`.slice(0, 10)
-    dateArrPerMonths.push(formattedTimestamp)
+    const formattedTimestamp = `${Date.parse(substractMonth)}`.slice(0, 10);
+    dateArrPerMonths.push(formattedTimestamp);
     i += 1;
   }
 
   return dateArrPerMonths;
-}
+};
 
 export const getMonth = (monthArr, index) => moment(+`${monthArr[index]}000`).format('MMMM');
 
@@ -24,4 +24,4 @@ export const getBlocksNumberPlasma = (monthArr, latestBlock) => monthArr.reduce(
     ...acc,
     latestBlock - diffPerMonth
   ]
-}, [])
+}, []);
